@@ -3,13 +3,16 @@
 
 const char* ssid = "";
 const char* password = "";
-const char* requestURL = "https://guthib.com";
+const char* getrequestURL = "https://guthib.com";
+const char* postrequestURL = "https://reqres.in/api/users?";
+const char* postrequestData = "id=2&name=Janet";
 
 bool wifiConnected = false;
-bool autoConnectEnabled = false;
 
 HTTPClient client; 
 
+
+//Serial Console
 void setup() {
     Serial.begin(115200);
     delay(1000);
@@ -18,83 +21,109 @@ void setup() {
 }
 
 void loop() {
+    // Check if there is incoming serial data
     if (Serial.available() > 0) {
+        // Read the incoming data until a newline character is received
         String inputString = Serial.readStringUntil('\n');
         inputString.trim();
 
-          if (inputString.startsWith("connect:")) {
-              int colonIndex = inputString.indexOf(':');
-              String newSSID = inputString.substring(colonIndex + 1, inputString.indexOf(':', colonIndex + 1));
-              String newPassword = inputString.substring(inputString.indexOf(':', colonIndex + 1) + 1);
+        // Check for various commands in the input string
+        if (inputString.startsWith("connect:")) {
+            // Extract SSID and password from the input string
+            int colonIndex = inputString.indexOf(':');
+            String newSSID = inputString.substring(colonIndex + 1, inputString.indexOf(':', colonIndex + 1));
+            String newPassword = inputString.substring(inputString.indexOf(':', colonIndex + 1) + 1);
 
-              ssid = newSSID.c_str(); 
-              password = newPassword.c_str(); 
+            // Update the SSID and password
+            ssid = newSSID.c_str();
+            password = newPassword.c_str();
 
+            // Connect to WiFi if not already connected
             if (!wifiConnected) {
-                WiFi.mode(WIFI_STA);
-                WiFi.begin(ssid, password);
-                Serial.println("\nConnecting");
-
-                while (WiFi.status() != WL_CONNECTED) {
-                    Serial.print(".");
-                    delay(100);
-                }
-
-                Serial.println("\nConnected to the WiFi network");
-                Serial.print("Local ESP32 IP: ");
-                Serial.println(WiFi.localIP());
-
-                wifiConnected = true;
+                connectToWifi();
             } else {
                 Serial.println("Already connected to WiFi");
             }
-        } else if (inputString == "disconnect") {
-            if (wifiConnected) {
-                WiFi.disconnect(true);
-                wifiConnected = false;
-                Serial.println("Wifi disconnected");
-            } else {
-                Serial.println("Not connected to WiFi");
-            }
-        } else if (inputString == "enable-autoconnect") {
-            autoConnectEnabled = true;
-            Serial.println("Auto-connect enabled");
-        } else if (inputString == "disable-autoconnect") {
-            autoConnectEnabled = false;
-            Serial.println("Auto-connect disabled");
-        } else if (inputString.startsWith("makerequest:")) {
-            String urlParameter = inputString.substring(12);
-            if (urlParameter.startsWith("http://") || urlParameter.startsWith("https://")) {
-                requestURL = urlParameter.c_str();
-            } else {
-                String tempURL = "https://" + urlParameter;
-                requestURL = tempURL.c_str();
-            }
 
-            client.begin(requestURL);
-            int responseCode = client.GET();
-            if(responseCode > 0) {
-              Serial.println(client.getString());
-            }
+        } else if (inputString == "disconnect") {
+            // Disconnect from WiFi
+            disconnectFromWifi();
+
+        } else if (inputString.startsWith("make-getrequest:")) {
+            // Handle get request
+            handleGetRequest(inputString.substring(16));
+
+        } else if (inputString.startsWith("make-postrequest:")) {
+            // Handle post request
+            handlePostRequest(inputString);
+
         } else if (inputString == "help") {
-          Serial.println("makerequest: + url/domain for http/s request, connect:ssid:password for wifi connect, disconnect for disconnect");
+            // Print help message
+            Serial.println("make-getrequest:[url] for get request, make-postrequest:[url and at the end add ?]:[data to send] for post request, connect:ssid:password for wifi connect, disconnect for disconnect");
+        } else {
+            Serial.println("This command dont exist or you are not connected to Wifi");
         }
     }
+}
 
-    if (autoConnectEnabled && !wifiConnected) {
-        WiFi.mode(WIFI_STA);
-        WiFi.begin(ssid, password);
-        Serial.println("\nConnecting automatically");
+void connectToWifi() {
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
+    Serial.println("\nConnecting");
 
-        while (WiFi.status() != WL_CONNECTED) {
-            Serial.print(".");
-            delay(100);
-        }
+    while (WiFi.status() != WL_CONNECTED) {
+        Serial.print(".");
+        delay(100);
+    }
 
-        Serial.println("\nConnected to the WiFi network");
-        Serial.print("Local ESP32 IP: ");
-        Serial.println(WiFi.localIP());
+    Serial.println("\nConnected to the WiFi network");
+    Serial.print("Local ESP IP: ");
+    Serial.println(WiFi.localIP());
+    wifiConnected = true;
+}
 
-        wifiConnected = true;
+void disconnectFromWifi() {
+    if (wifiConnected) {
+        WiFi.disconnect(true);
+        wifiConnected = false;
+        Serial.println("Wifi disconnected");
+    } else {
+        Serial.println("Not connected to WiFi");
+    }
+}
+
+void handleGetRequest(String urlParameter) {
+    if (urlParameter.startsWith("http://") || urlParameter.startsWith("https://")) {
+        getrequestURL = urlParameter.c_str();
+    } else {
+        String tempURL = "https://" + urlParameter;
+        getrequestURL = tempURL.c_str();
+    }
+
+    client.begin(getrequestURL);
+    int getresponseCode = client.GET();
+    if (getresponseCode > 0) {
+        Serial.println(client.getString());
+    }
+}
+void handlePostRequest(String inputString) {
+    int colonIndex = inputString.indexOf(':');
+    int ampersandIndex = inputString.indexOf('&');
+    String urlpostParameter = inputString.substring(colonIndex + 1, inputString.indexOf('?', colonIndex + 1));
+    String postData = inputString.substring(inputString.indexOf('?', colonIndex + 1) + 1);
+
+    postrequestURL = urlpostParameter.c_str(); 
+    postrequestData = postData.c_str(); 
+
+    client.begin(postrequestURL);
+    client.addHeader("Content-Type", "application/x-www-form-urlencoded"); 
+    int postresponseCode = client.POST(postrequestData);
+    if (postresponseCode > 0) {
+        Serial.println(client.getString());
+    } else if (postresponseCode == 118) {
+        Serial.println("You are not connected to Wifi or Host is unreachable");
+    } else {
+        Serial.print("Error sending POST request Error: ");
+        Serial.println(postresponseCode);
     }
 }
