@@ -1,4 +1,4 @@
-# 🚀 FlipperZero WiFi 
+<h1 align="center">🚀 FlipperZero WiFi 📶</h1>
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 
@@ -65,7 +65,7 @@ This repository contains firmware for ESP and the accompanying application for F
 
 ## Contributors
 
-- [![Butwm](https://avatars.githubusercontent.com/u/123456?s=48&v=4)](https://github.com/Butwm) [Butwm](https://www.github.com/Butwm)
+- [Butwm](https://www.github.com/Butwm)
 
 Feel free to contribute to this project by submitting pull requests or opening issues.
 
