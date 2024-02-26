@@ -1,4 +1,4 @@
-<h1 align="center">🐬 FlipperZero WiFi 📶</h1>
+<h1 align="center">🐬 FlipWifi 📶</h1>
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 
