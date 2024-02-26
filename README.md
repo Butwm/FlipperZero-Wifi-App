@@ -1,4 +1,4 @@
-<h1 align="center">🚀 FlipperZero WiFi 📶</h1>
+<h1 align="center">🐬 FlipperZero WiFi 📶</h1>
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 
@@ -34,6 +34,10 @@ This repository contains firmware for ESP and the accompanying application for F
       <tr>
         <td>3v3</td>
         <td>3v3</td>
+      </tr>
+        <tr>
+        <td>GND</td>
+        <td>GND</td>
       </tr>
     </table>
 
