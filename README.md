@@ -92,7 +92,11 @@ Commands and what they do:
     ```
     $ help
     
-    $ make-getrequest:[url] for get request, make-postrequest:[url]:[data to send] for post request, connect:ssid:password for wifi connect, disconnect for disconnect
+    $  make-getrequest:[url] - sends a GET request to the specified URL
+       make-postrequest:[url]:[data to send] - sends a POST request to the specified URL with the provided data
+       scanap - Scan for Access Points around you
+       connect:ssid:password - connects to a WiFi network with the specified SSID and password
+       disconnect - disconnects from the current WiFi network
     ```
 
 - Make GET Request: Initiates a GET request to the specified URL
