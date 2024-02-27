@@ -119,7 +119,7 @@ Commands and what they do:
     2. or you can split the URL [url]:[data]
        ```
        $ make-postrequest:https://reqres.in/api/users:id=2&name=Janet
-       $ {":id":"2","name":"Janet","id":"291","createdAt":"2024-02-26T14:34:14.991Z"}
+       $ {"make-postrequest:https://reqres.in/api/users:id":"2","name":"Janet","id":"396","createdAt":"2024-02-27T17:16:13.865Z"}
        ```
  - Connect to Wifi Network: Establish a connection to a Wi-Fi network.
     1. connect to wifi with password
@@ -141,7 +141,22 @@ Commands and what they do:
      $ disconnect
      $ Wifi disconnected
      ```
-- Scan Access Points (Work in Progress): Scan for available Access Points.
+- Scan Access Points: Scan for available Access Points.
+  ```
+  $ scanap
+  $ Scanning...
+    Scan complete
+    29 networks found
+    [0] xxxxx (-52)
+    [1] xxxxxx (-54)
+    [2] xxxxx (-55)
+    [3] xxxxxxxxx (-60)
+    [4] xxxxx (-68)
+    [5] xxxxx (-72)
+    [6] xxxxx (-73)
+    [7] xxxxx (-74)
+    [8] xxxxxx (-76)
+  ```
 
 - Automatically Connect to Wifi Network (Work in Progress): Automatically reconnect to a previously known Wi-Fi network.
      
