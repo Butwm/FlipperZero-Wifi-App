@@ -72,7 +72,7 @@ This repository contains firmware for ESP and the accompanying application for F
 
 ## 💻 Apps Compatibile with FlipWifi
 
-- There is nothing yet but we are open to all collaborations
+- Weather App by [Vollukas](https://github.com/vollukas)
 
 ## Contributors
 
