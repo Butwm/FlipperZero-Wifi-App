@@ -5,19 +5,18 @@
 
 This repository contains firmware for ESP and the accompanying application for Flipper Zero, enabling Flipper to connect to WiFi via ESP.
 
-## Features
+## 💻 Features
 
 - Connect Flipper Zero to WiFi network using ESP module.
 - Simplify app development that requires Internet.
 - Perform HTTP/S requests, including POST and GET requests, effortlessly.
 - **Upcoming features (In development):**
-    - Update Flipper firmware without the need for a PC or phone.
-    - Automatic connection to known WiFi networks.
-    - Download latest FW for flipper - Monentum & Official Firmware
-    - Download AssetsPacks
-    - Weather App
+    - Update latest FW for flipper without the need for a PC or phone - Monentum & Official Firmware [Status: 🔴].
+    - Automatic connection to known WiFi networks [Status: 🟠].
+    - Download AssetsPacks [Status: 🔴].
+    - Weather App [Status: 🔴].
 
-## Usage
+## 🎛️ Usage
 
 - **Flash the firmware** onto the ESP module. [Download](https://github.com/Butwm/FlipperZero-Wifi-App/releases)
 - **Connect ESP to Flipper:**
@@ -48,7 +47,7 @@ This repository contains firmware for ESP and the accompanying application for F
 - **Download latest app** and upload it on Flipper. [Download](https://github.com/Butwm/FlipperZero-Wifi-App/releases)
 - **Open app and connect to WiFi!**
 
-## Compatibility 
+## ✅ Compatibility 
 
 <table style="width:100%; background-color: #f2f2f2;">
   <tr>
@@ -71,7 +70,7 @@ This repository contains firmware for ESP and the accompanying application for F
   </tr>
 </table>
 
-## Apps Compatibile with FlipWifi
+## 💻 Apps Compatibile with FlipWifi
 
 - There is nothing yet but we are open to all collaborations
 
@@ -81,7 +80,7 @@ This repository contains firmware for ESP and the accompanying application for F
 
 Feel free to contribute to this project by submitting pull requests or opening issues.
 
-## For Developers
+## 🛠️ For Developers
 
 Are you looking to develop an application or game for Flipper that requires Internet connectivity?
 
