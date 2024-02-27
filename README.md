@@ -13,6 +13,9 @@ This repository contains firmware for ESP and the accompanying application for F
 - **Upcoming features (In development):**
     - Update Flipper firmware without the need for a PC or phone.
     - Automatic connection to known WiFi networks.
+    - Download latest FW for flipper - Monentum & Official Firmware
+    - Download AssetsPacks
+    - Weather App
 
 ## Usage
 
@@ -67,6 +70,10 @@ This repository contains firmware for ESP and the accompanying application for F
     <td>❌</td>
   </tr>
 </table>
+
+## Apps Compatibile with FlipWifi
+
+- There is nothing yet but we are open to all collaborations
 
 ## Contributors
 
