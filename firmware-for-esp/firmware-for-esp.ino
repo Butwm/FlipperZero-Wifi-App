@@ -1,11 +1,15 @@
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <iostream>
+#include <string>
 
 const char* ssid = "";
 const char* password = "";
 const char* getrequestURL = "https://guthib.com";
 const char* postrequestURL = "https://reqres.in/api/users?";
 const char* postrequestData = "id=2&name=Janet";
+
+char addthisChar = '?';
 
 bool wifiConnected = false;
 
@@ -40,7 +44,7 @@ void loop() {
 
             // Connect to WiFi if not already connected
             if (!wifiConnected) {
-                connectToWifi();
+            connectToWifi();
             } else {
                 Serial.println("Already connected to WiFi");
             }
@@ -59,7 +63,11 @@ void loop() {
 
         } else if (inputString == "help") {
             // Print help message
-            Serial.println("make-getrequest:[url] for get request, make-postrequest:[url and at the end add ?]:[data to send] for post request, connect:ssid:password for wifi connect, disconnect for disconnect");
+            Serial.printf("make-getrequest:[url] - sends a GET request to the specified URL\nmake-postrequest:[url]:[data to send] - sends a POST request to the specified URL with the provided data\nscanap - Scan for Access Points around you\nconnect:ssid:password - connects to a WiFi network with the specified SSID and password\ndisconnect - disconnects from the current WiFi network");
+
+        } else if(inputString == "scanap") {
+            // Scan Acess Points
+            ScanAP();
         } else {
             Serial.println("This command dont exist or you are not connected to Wifi");
         }
@@ -93,20 +101,29 @@ void disconnectFromWifi() {
 }
 
 void handleGetRequest(String urlParameter) {
-    if (urlParameter.startsWith("http://") || urlParameter.startsWith("https://")) {
-        getrequestURL = urlParameter.c_str();
-    } else {
-        String tempURL = "https://" + urlParameter;
-        getrequestURL = tempURL.c_str();
-    }
 
-    client.begin(getrequestURL);
-    int getresponseCode = client.GET();
-    if (getresponseCode > 0) {
-        Serial.println(client.getString());
+    std::string getrequestURLverify = urlParameter.c_str();
+
+    if (getrequestURLverify.empty()) {
+        Serial.println("It won't work without a URL");
+    } else {
+
+        if (urlParameter.startsWith("http://") || urlParameter.startsWith("https://")) {
+            getrequestURL = urlParameter.c_str();
+        } else {
+            String tempURL = "https://" + urlParameter;
+            getrequestURL = tempURL.c_str();
+        }
+
+        client.begin(getrequestURL);
+        int getresponseCode = client.GET();
+        if (getresponseCode > 0) {
+            Serial.println(client.getString());
+        }
     }
 }
 void handlePostRequest(String inputString) {
+    int urlStartIndex = inputString.indexOf("://");
     int colonIndex = inputString.indexOf(':');
     int ampersandIndex = inputString.indexOf('&');
     String urlpostParameter = inputString.substring(colonIndex + 1, inputString.indexOf('?', colonIndex + 1));
@@ -115,15 +132,58 @@ void handlePostRequest(String inputString) {
     postrequestURL = urlpostParameter.c_str(); 
     postrequestData = postData.c_str(); 
 
-    client.begin(postrequestURL);
-    client.addHeader("Content-Type", "application/x-www-form-urlencoded"); 
-    int postresponseCode = client.POST(postrequestData);
-    if (postresponseCode > 0) {
-        Serial.println(client.getString());
-    } else if (postresponseCode == 118) {
-        Serial.println("You are not connected to Wifi or Host is unreachable");
+    std::string postrequestURLverify = postrequestURL;
+    std::string postrequestDataverify = postrequestData;
+
+    if (postrequestURLverify.empty()) {
+        Serial.println("It won't work without a URL");
     } else {
-        Serial.print("Error sending POST request Error: ");
-        Serial.println(postresponseCode);
+
+        if (postrequestURLverify.back() != addthisChar) {
+
+            postrequestURLverify.push_back(addthisChar);
+
+            postrequestURL = postrequestURLverify.c_str();
+            }
+
+
+        client.begin(postrequestURL);
+        client.addHeader("Content-Type", "application/x-www-form-urlencoded"); 
+        int postresponseCode = client.POST(postrequestData);
+        if (postresponseCode > 0) {
+            Serial.println(client.getString());
+        } else if (postresponseCode == 118) {
+            Serial.println("You are not connected to Wifi or Host is unreachable");
+        } else {
+            Serial.print("Error sending POST request Error: ");
+            Serial.println(postresponseCode);
+        }
+    }
+}
+
+void ScanAP() {
+    
+    //scan
+    Serial.println("Scanning...");
+
+    int n = WiFi.scanNetworks();
+    Serial.println("Scan complete");
+
+    if (n == 0) {
+        Serial.println("No networks found");
+    } else {
+        Serial.print(n);
+        Serial.println(" networks found");
+        for (int i = 0; i < n; ++i) {
+        // Name of AP and strange of signal
+        Serial.print("[");
+        Serial.print(i);
+        Serial.print("]");
+        Serial.print(" ");
+        Serial.print(WiFi.SSID(i));
+        Serial.print(" (");
+        Serial.print(WiFi.RSSI(i));
+        Serial.println(")");
+        }
     }
 }

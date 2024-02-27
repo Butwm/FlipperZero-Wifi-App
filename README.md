@@ -51,9 +51,9 @@ This repository contains firmware for ESP and the accompanying application for F
   </tr>
   <tr>
     <td>Supported</td>
-    <td>✅</td>
-    <td>✅</td>
-    <td>✅</td>
+    <td>❌</td>
+    <td>❌</td>
+    <td>❌</td>
   </tr>
   <tr>
     <td>Tested</td>
