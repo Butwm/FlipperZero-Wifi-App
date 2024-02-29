@@ -2,11 +2,12 @@
 #include <HTTPClient.h>
 #include <iostream>
 #include <string>
+#include <ArduinoJson.h>
 
 const char* ssid = "";
 const char* password = "";
 const char* getrequestURL = "https://guthib.com";
-const char* postrequestURL = "https://reqres.in/api/users?";
+const char* postrequestURL = "https://reqres.in/api/users";
 const char* postrequestData = "id=2&name=Janet";
 
 char addthisChar = '?';
@@ -118,7 +119,11 @@ void handleGetRequest(String urlParameter) {
         client.begin(getrequestURL);
         int getresponseCode = client.GET();
         if (getresponseCode > 0) {
-            Serial.println(client.getString());
+          DynamicJsonDocument doc(1024);
+          deserializeJson(doc, client.getString());
+          
+          Serial.println(doc["data"]["email"].as<String>());
+
         }
     }
 }
@@ -170,7 +175,7 @@ void ScanAP() {
     Serial.println("Scan complete");
 
     if (n == 0) {
-        Serial.println("No networks found");
+        Serial.println("No networks found try again");
     } else {
         Serial.print(n);
         Serial.println(" networks found");
