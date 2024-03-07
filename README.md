@@ -15,6 +15,7 @@ This repository contains firmware for ESP and the accompanying application for F
     - Automatic connection to known WiFi networks [Status: 🟠].
     - Download AssetsPacks [Status: 🔴].
     - Flash ESP with our compatibile FW [Status: 🟠].
+    - Support for ESP12 and ESP8266
 
 ## 🎛️ Usage
 
