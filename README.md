@@ -1,5 +1,7 @@
 <h1 align="center">🐬 FlipWifi 📶</h1>
 <h2 align="center">❗ Archived - Not Done ❗</h2>
+<img width="333" alt="image" src="https://github.com/user-attachments/assets/4f03cd81-96d8-4bfa-bd2c-327a7ee8793c" />
+
 
 ![License](https://img.shields.io/badge/license-Apache%202.0-blue)
 
